@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="DivisionSet" EntityType="Model1.Store.DivisionSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="WorkerSet" EntityType="Model1.Store.WorkerSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="DivisionWorker" Association="Model1.Store.DivisionWorker">
+      <End Role="Division" EntitySet="DivisionSet" />
+      <End Role="Worker" EntitySet="WorkerSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="DivisionSet">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+    </Key>
+    <Property Name="DivisionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WorkerSet">
+    <Key>
+      <PropertyRef Name="WorkerId" />
+    </Key>
+    <Property Name="WorkerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Age" Type="smallint" Nullable="false" />
+    <Property Name="Division_DivisionId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="DivisionWorker">
+    <End Role="Division" Type="Model1.Store.DivisionSet" Multiplicity="1" />
+    <End Role="Worker" Type="Model1.Store.WorkerSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="Worker">
+        <PropertyRef Name="Division_DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DivisionSet" EntityType="Model1.Division" />
+          <EntitySet Name="WorkerSet" EntityType="Model1.Worker" />
+          <AssociationSet Name="DivisionWorker" Association="Model1.DivisionWorker">
+            <End Role="Division" EntitySet="DivisionSet" />
+            <End Role="Worker" EntitySet="WorkerSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Division">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+          </Key>
+          <Property Name="DivisionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Worker" Relationship="Model1.DivisionWorker" FromRole="Division" ToRole="Worker" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="WorkerId" />
+          </Key>
+          <Property Name="WorkerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Age" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Division" Relationship="Model1.DivisionWorker" FromRole="Worker" ToRole="Division" />
+        </EntityType>
+        <Association Name="DivisionWorker">
+          <End Type="Model1.Division" Role="Division" Multiplicity="1" />
+          <End Type="Model1.Worker" Role="Worker" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="DivisionSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Division)">
+        <MappingFragment StoreEntitySet="DivisionSet">
+          <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WorkerSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Worker)">
+        <MappingFragment StoreEntitySet="WorkerSet">
+          <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Age" ColumnName="Age" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="DivisionWorker" TypeName="Model1.DivisionWorker" StoreEntitySet="WorkerSet">
+      <EndProperty Name="Division">
+        <ScalarProperty Name="DivisionId" ColumnName="Division_DivisionId" />
+      </EndProperty>
+      <EndProperty Name="Worker">
+        <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
